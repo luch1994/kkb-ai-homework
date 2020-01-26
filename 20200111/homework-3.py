@@ -31,5 +31,6 @@ def zip_fn(text):
 
 print('我的方法：', '-' * 50)
 fn(text)
+
 print('老师的方法：', '-' * 50)
 zip_fn(text)

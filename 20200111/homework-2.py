@@ -33,6 +33,7 @@ while True:
             if money > balance:
                 print('您的余额不足')
             else:
+                balance -= money
                 print('您成功取走：%s，当前余额：%s' % (money, balance))
         else:
             print('输入的不是数字！')
