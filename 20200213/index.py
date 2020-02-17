@@ -112,6 +112,8 @@ def tisheng():
             # 新英雄逃跑，本轮战斗结束
             if new_hero.hp <= LB.damage:
                 print("{}逃跑了。。。".format(new_hero.name))
+                # 回血回30
+                new_hero.hp = 30
                 break
         # 吕布逃跑，战斗结束
         if is_lb_fail:
