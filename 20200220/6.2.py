@@ -41,7 +41,7 @@ for i in range(len(dataset)):
     else:
         dataset[i].insert(0, '{}'.format(i))
 # 将新加入的数据转换为字符串
-txtdata = '\n'.join([' '.join(item) for item in dataset])
+txtdata = '\n'.join([','.join(item) for item in dataset])
 # 写入数据
 with open(file, 'w', encoding='utf-8') as f:
     f.write(txtdata)
@@ -53,11 +53,15 @@ with open(file, 'w', encoding='utf-8') as f:
 inser_data = '18 青绿 硬挺 浊响 稍糊 平坦 硬滑 0.666 0.111 是'
 # 使用a，表示追加数据，不改变原有数据
 with open(file, 'a', encoding='utf-8') as f:
-    f.write('\n' + inser_data)
+    f.write('\n' + ','.join(inser_data.split(' ')))
 
-print('查看全体数据', '*' * 20)
+
+
+"""
+使用pandas读取和过滤数据
+"""
 # 查看全体数据
-df = pd.read_csv(file)
+df = pd.read_csv(file, dtype=str)
 print(df.head())
 
 
@@ -65,27 +69,49 @@ print(df.head())
 # your code here
 # columns是指列标签
 # datalist指全体数据内容，每一行数据应为一个列表
-columns = []
-datalist = []
-with open(file, 'r', encoding='utf-8') as f:
-    txtdata = f.read()
-    datas = list(map(lambda row: row.split(' '), txtdata.split('\n')))
-    columns = datas[0]
-    datalist = datas[1:]
+columns = df.columns.values
+datalist = df.values
 
+# print(columns)
+# print(datalist)
 
-print('验证数据是否相符', '*' * 20)
 # 验证数据信息是否相符
 print(columns==['编号', '色泽', '根蒂', '敲声', '纹理', '脐部', '触感', '密度', '含糖率', '好瓜'])
 print(datalist[-1]==['18', '青绿', '硬挺', '浊响', '稍糊', '平坦', '硬滑', '0.666', '0.111', '是'])
 
-# 在所有数据中过滤出色泽='浅白'的数据
-# 在所有数据中过滤出密度大于0.5的数据
-# your code here
-datalist1 = list(filter(lambda row: row[1] == '浅白', datalist))
-datalist2 = list(filter(lambda row: float(row[7]) > 0.5, datalist))
+# # 在所有数据中过滤出色泽='浅白'的数据
+# # 在所有数据中过滤出密度大于0.5的数据
+datalist1 = datalist[datalist[:, 1] == '浅白']
+datalist2 = datalist[datalist[:, 7].astype('float') > 0.5]
 
 print('过滤浅白数据', '*' * 20)
 print(datalist1)
 print('过滤密度大于0.5的数据', '*' * 20)
 print(datalist2)
+
+
+"""
+使用open函数读取，和filter过滤数据的方法
+"""
+
+# with open(file, 'r', encoding='utf-8') as f:
+#     txtdata = f.read()
+#     datas = list(map(lambda row: row.split(','), txtdata.split('\n')))
+#     columns = datas[0]
+#     datalist = datas[1:]
+
+# print('验证数据是否相符', '*' * 20)
+# # 验证数据信息是否相符
+# print(columns==['编号', '色泽', '根蒂', '敲声', '纹理', '脐部', '触感', '密度', '含糖率', '好瓜'])
+# print(datalist[-1]==['18', '青绿', '硬挺', '浊响', '稍糊', '平坦', '硬滑', '0.666', '0.111', '是'])
+
+# # 在所有数据中过滤出色泽='浅白'的数据
+# # 在所有数据中过滤出密度大于0.5的数据
+# # your code here
+# datalist1 = list(filter(lambda row: row[1] == '浅白', datalist))
+# datalist2 = list(filter(lambda row: float(row[7]) > 0.5, datalist))
+
+# print('过滤浅白数据', '*' * 20)
+# print(datalist1)
+# print('过滤密度大于0.5的数据', '*' * 20)
+# print(datalist2)

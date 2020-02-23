@@ -39,7 +39,7 @@ def parse(url, city_name):
     if response.ok:
         html = response.text
         
-        soup = BeautifulSoup(html, features='html')
+        soup = BeautifulSoup(html, features='html.parser')
         data_table = soup.table
         
         content = data_table.contents
@@ -74,11 +74,12 @@ if __name__ == '__main__':
         url = build_url('hangzhou', 2019, i)
         data = parse(url, '杭州')
         datas.extend(data)
-    # print(datas)
     
     # 只保留质量等级优 良 数据
-    # your code here
+    
+    datas = [datas[0]] + list(filter(lambda item: item[2] == '优' or item[2] == '良', datas[1:]))
+
     # 提示：用什么方法对数据进行筛选？
     
     # 保存数据
-    save(data, './data.txt')
+    save(datas, './data.txt')
